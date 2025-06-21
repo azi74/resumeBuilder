@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{resume.personalInfo.firstName}} {{resume.personalInfo.lastName}} - Resume</title>
+  <style>
+    body {
+      font-family: 'Google Sans', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #6d28d9;
+      padding-bottom: 20px;
+    }
+    .name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #6d28d9;
+      margin-bottom: 5px;
+    }
+    .contact-info {
+      font-size: 16px;
+      color: #666;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #6d28d9;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+    .job, .education-item, .project, .certification {
+      margin-bottom: 15px;
+    }
+    .job-title, .degree, .project-name, .certification-name {
+      font-weight: 600;
+      font-size: 18px;
+    }
+    .company, .institution, .issuing-organization {
+      font-style: italic;
+    }
+    .date {
+      color: #666;
+      font-size: 14px;
+    }
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .skill {
+      background-color: #f0f0f0;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .summary {
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="name">{{resume.personalInfo.firstName}} {{resume.personalInfo.lastName}}</div>
+    <div class="contact-info">
+      {{resume.personalInfo.email}} | {{resume.personalInfo.phone}} | {{resume.personalInfo.city}}, {{resume.personalInfo.country}}
+      {{#if resume.socialLinks.linkedin}} | LinkedIn: {{resume.socialLinks.linkedin}}{{/if}}
+      {{#if resume.socialLinks.github}} | GitHub: {{resume.socialLinks.github}}{{/if}}
+    </div>
+  </div>
+
+  {{#if resume.personalInfo.summary}}
+  <div class="section">
+    <div class="section-title">SUMMARY</div>
+    <div class="summary">{{resume.personalInfo.summary}}</div>
+  </div>
+  {{/if}}
+
+  {{#if resume.experiences.length}}
+  <div class="section">
+    <div class="section-title">EXPERIENCE</div>
+    {{#each resume.experiences}}
+    <div class="job">
+      <div class="job-title">{{this.jobTitle}}</div>
+      <div class="company">{{this.company}} {{#if this.location}}| {{this.location}}{{/if}}</div>
+      <div class="date">{{formatDate this.startDate}} - {{#if this.current}}Present{{else}}{{formatDate this.endDate}}{{/if}}</div>
+      <div class="description">{{this.description}}</div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if resume.educations.length}}
+  <div class="section">
+    <div class="section-title">EDUCATION</div>
+    {{#each resume.educations}}
+    <div class="education-item">
+      <div class="degree">{{this.degree}} {{#if this.fieldOfStudy}}in {{this.fieldOfStudy}}{{/if}}</div>
+      <div class="institution">{{this.institution}}</div>
+      <div class="date">{{formatDate this.startDate}} - {{#if this.current}}Present{{else}}{{formatDate this.endDate}}{{/if}}</div>
+      {{#if this.description}}<div class="description">{{this.description}}</div>{{/if}}
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if resume.skills.length}}
+  <div class="section">
+    <div class="section-title">SKILLS</div>
+    <div class="skills-list">
+      {{#each resume.skills}}
+      <div class="skill">{{this.name}}</div>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if resume.projects.length}}
+  <div class="section">
+    <div class="section-title">PROJECTS</div>
+    {{#each resume.projects}}
+    <div class="project">
+      <div class="project-name">{{this.name}}</div>
+      {{#if this.url}}<div class="url">{{this.url}}</div>{{/if}}
+      <div class="description">{{this.description}}</div>
+      {{#if this.technologies.length}}<div class="technologies">Technologies: {{join this.technologies ', '}}</div>{{/if}}
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if resume.certifications.length}}
+  <div class="section">
+    <div class="section-title">CERTIFICATIONS</div>
+    {{#each resume.certifications}}
+    <div class="certification">
+      <div class="certification-name">{{this.name}}</div>
+      <div class="issuing-organization">{{this.issuingOrganization}}</div>
+      <div class="date">{{formatDate this.issueDate}} - {{#if this.expirationDate}}{{formatDate this.expirationDate}}{{else}}Present{{/if}}</div>
+      {{#if this.credentialId}}<div class="credential">Credential ID: {{this.credentialId}}</div>{{/if}}
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</body>
+</html>

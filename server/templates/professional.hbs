@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{resume.personalInfo.firstName}} {{resume.personalInfo.lastName}} - Resume</title>
+  <style>
+    body {
+      font-family: 'Google Sans', sans-serif;
+      line-height: 1.5;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .name-title {
+      flex: 2;
+    }
+    .name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 5px;
+    }
+    .title {
+      font-size: 16px;
+      color: #6d28d9;
+      font-weight: 500;
+    }
+    .contact-info {
+      flex: 1;
+      text-align: right;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .contact-item {
+      margin-bottom: 5px;
+    }
+    .main-content {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 30px;
+    }
+    .sidebar {
+      border-right: 1px solid #e0e0e0;
+      padding-right: 20px;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .job, .education-item, .project, .certification {
+      margin-bottom: 20px;
+    }
+    .job-header, .education-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .job-title, .degree, .project-name, .certification-name {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .company, .institution, .issuing-organization {
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 5px;
+    }
+    .date {
+      color: #718096;
+      font-size: 14px;
+    }
+    .description {
+      font-size: 14px;
+      color: #4a5568;
+    }
+    .skills-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .skill {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .skill-name {
+      font-size: 14px;
+    }
+    .skill-level {
+      display: flex;
+      gap: 3px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #e2e8f0;
+    }
+    .dot.filled {
+      background-color: #6d28d9;
+    }
+    .social-links {
+      margin-top: 10px;
+    }
+    .social-link {
+      font-size: 13px;
+      color: #6d28d9;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="name-title">
+      <h1 class="name">{{resume.personalInfo.firstName}} {{resume.personalInfo.lastName}}</h1>
+      <div class="title">Professional Summary</div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item">{{resume.personalInfo.email}}</div>
+      <div class="contact-item">{{resume.personalInfo.phone}}</div>
+      <div class="contact-item">{{resume.personalInfo.city}}, {{resume.personalInfo.country}}</div>
+      <div class="social-links">
+        {{#if resume.socialLinks.linkedin}}<a href="{{resume.socialLinks.linkedin}}" class="social-link">LinkedIn</a>{{/if}}
+        {{#if resume.socialLinks.github}}<a href="{{resume.socialLinks.github}}" class="social-link">GitHub</a>{{/if}}
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="sidebar">
+      {{#if resume.personalInfo.summary}}
+      <div class="section">
+        <div class="section-title">Summary</div>
+        <div class="description">{{resume.personalInfo.summary}}</div>
+      </div>
+      {{/if}}
+
+      {{#if resume.skills.length}}
+      <div class="section">
+        <div class="section-title">Skills</div>
+        <div class="skills-list">
+          {{#each resume.skills}}
+          <div class="skill">
+            <span class="skill-name">{{this.name}}</span>
+            <div class="skill-level">
+              {{#times 5}}
+                <div class="dot {{#if (lte this ../this.levelNumber)}}filled{{/if}}"></div>
+              {{/times}}
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+
+      {{#if resume.certifications.length}}
+      <div class="section">
+        <div class="section-title">Certifications</div>
+        {{#each resume.certifications}}
+        <div class="certification">
+          <div class="certification-name">{{this.name}}</div>
+          <div class="issuing-organization">{{this.issuingOrganization}}</div>
+          <div class="date">{{formatDate this.issueDate}} - {{#if this.expirationDate}}{{formatDate this.expirationDate}}{{else}}Present{{/if}}</div>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+    </div>
+
+    <div class="main">
+      {{#if resume.experiences.length}}
+      <div class="section">
+        <div class="section-title">Professional Experience</div>
+        {{#each resume.experiences}}
+        <div class="job">
+          <div class="job-header">
+            <div>
+              <div class="job-title">{{this.jobTitle}}</div>
+              <div class="company">{{this.company}} {{#if this.location}}| {{this.location}}{{/if}}</div>
+            </div>
+            <div class="date">{{formatDate this.startDate}} - {{#if this.current}}Present{{else}}{{formatDate this.endDate}}{{/if}}</div>
+          </div>
+          <div class="description">{{this.description}}</div>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      {{#if resume.educations.length}}
+      <div class="section">
+        <div class="section-title">Education</div>
+        {{#each resume.educations}}
+        <div class="education-item">
+          <div class="education-header">
+            <div>
+              <div class="degree">{{this.degree}} {{#if this.fieldOfStudy}}in {{this.fieldOfStudy}}{{/if}}</div>
+              <div class="institution">{{this.institution}}</div>
+            </div>
+            <div class="date">{{formatDate this.startDate}} - {{#if this.current}}Present{{else}}{{formatDate this.endDate}}{{/if}}</div>
+          </div>
+          {{#if this.description}}<div class="description">{{this.description}}</div>{{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      {{#if resume.projects.length}}
+      <div class="section">
+        <div class="section-title">Key Projects</div>
+        {{#each resume.projects}}
+        <div class="project">
+          <div class="project-name">{{this.name}}</div>
+          {{#if this.url}}<div class="company">{{this.url}}</div>{{/if}}
+          <div class="description">{{this.description}}</div>
+          {{#if this.technologies.length}}<div class="description">Technologies: {{join this.technologies ', '}}</div>{{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</body>
+</html>

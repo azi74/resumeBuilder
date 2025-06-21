@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{resume.personalInfo.firstName}} {{resume.personalInfo.lastName}} - Resume</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap');
+    
+    body {
+      font-family: 'Google Sans', sans-serif;
+      line-height: 1.6;
+      color: #2d3748;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0;
+      background-color: #f8f5ff;
+    }
+    .resume-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar {
+      background-color: #6d28d9;
+      color: white;
+      padding: 40px 25px;
+    }
+    .main {
+      background-color: white;
+      padding: 40px;
+    }
+    .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.2;
+    }
+    .title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.8;
+      margin-bottom: 30px;
+    }
+    .contact-info {
+      margin-bottom: 30px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #6d28d9;
+      margin-bottom: 15px;
+      position: relative;
+      padding-bottom: 5px;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: #6d28d9;
+    }
+    .sidebar .section-title {
+      color: white;
+    }
+    .sidebar .section-title:after {
+      background-color: white;
+    }
+    .job, .education-item, .project, .certification {
+      margin-bottom: 20px;
+      position: relative;
+      padding-left: 20px;
+    }
+    .job:before, .education-item:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #6d28d9;
+    }
+    .job-title, .degree, .project-name, .certification-name {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .job-header, .education-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .company, .institution, .issuing-organization {
+      font-style: italic;
+      color: #4a5568;
+      margin-bottom: 5px;
+    }
+    .date {
+      color: #718096;
+      font-size: 13px;
+      background-color: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .description {
+      font-size: 14px;
+      color: #4a5568;
+    }
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .skill {
+      font-size: 13px;
+      position: relative;
+      padding-left: 15px;
+    }
+    .skill:before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #6d28d9;
+      font-weight: bold;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #ddd, transparent);
+      margin: 25px 0;
+    }
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .social-link {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .social-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="resume-container">
+    <div class="sidebar">
+      <div class="name">{{resume.personalInfo.firstName}}<br>{{resume.personalInfo.lastName}}</div>
+      <div class="title">Professional Resume</div>
+
+      <div class="contact-info">
+        <div class="contact-item">
+          <span>{{resume.personalInfo.email}}</span>
+        </div>
+        <div class="contact-item">
+          <span>{{resume.personalInfo.phone}}</span>
+        </div>
+        <div class="contact-item">
+          <span>{{resume.personalInfo.city}}, {{resume.personalInfo.country}}</span>
+        </div>
+      </div>
+
+      {{#if resume.skills.length}}
+      <div class="section">
+        <div class="section-title">Skills</div>
+        <div class="skills-list">
+          {{#each resume.skills}}
+          <div class="skill">{{this.name}}</div>
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+
+      {{#if resume.certifications.length}}
+      <div class="section">
+        <div class="section-title">Certifications</div>
+        {{#each resume.certifications}}
+        <div class="certification">
+          <div class="certification-name">{{this.name}}</div>
+          <div class="issuing-organization">{{this.issuingOrganization}}</div>
+          <div class="date">{{formatDate this.issueDate}} - {{#if this.expirationDate}}{{formatDate this.expirationDate}}{{else}}Present{{/if}}</div>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      <div class="social-links">
+        {{#if resume.socialLinks.linkedin}}
+        <a href="{{resume.socialLinks.linkedin}}" class="social-link">in</a>
+        {{/if}}
+        {{#if resume.socialLinks.github}}
+        <a href="{{resume.socialLinks.github}}" class="social-link">gh</a>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="main">
+      {{#if resume.personalInfo.summary}}
+      <div class="section">
+        <div class="section-title">Profile</div>
+        <div class="description">{{resume.personalInfo.summary}}</div>
+      </div>
+      <div class="divider"></div>
+      {{/if}}
+
+      {{#if resume.experiences.length}}
+      <div class="section">
+        <div class="section-title">Experience</div>
+        {{#each resume.experiences}}
+        <div class="job">
+          <div class="job-header">
+            <div class="job-title">{{this.jobTitle}}</div>
+            <div class="date">{{formatDate this.startDate}} - {{#if this.current}}Present{{else}}{{formatDate this.endDate}}{{/if}}</div>
+          </div>
+          <div class="company">{{this.company}} {{#if this.location}}| {{this.location}}{{/if}}</div>
+          <div class="description">{{this.description}}</div>
+        </div>
+        {{/each}}
+      </div>
+      <div class="divider"></div>
+      {{/if}}
+
+      {{#if resume.educations.length}}
+      <div class="section">
+        <div class="section-title">Education</div>
+        {{#each resume.educations}}
+        <div class="education-item">
+          <div class="education-header">
+            <div class="degree">{{this.degree}} {{#if this.fieldOfStudy}}in {{this.fieldOfStudy}}{{/if}}</div>
+            <div class="date">{{formatDate this.startDate}} - {{#if this.current}}Present{{else}}{{formatDate this.endDate}}{{/if}}</div>
+          </div>
+          <div class="institution">{{this.institution}}</div>
+          {{#if this.description}}<div class="description">{{this.description}}</div>{{/if}}
+        </div>
+        {{/each}}
+      </div>
+      <div class="divider"></div>
+      {{/if}}
+
+      {{#if resume.projects.length}}
+      <div class="section">
+        <div class="section-title">Projects</div>
+        {{#each resume.projects}}
+        <div class="project">
+          <div class="project-name">{{this.name}}</div>
+          {{#if this.url}}<div class="company">{{this.url}}</div>{{/if}}
+          <div class="description">{{this.description}}</div>
+          {{#if this.technologies.length}}<div class="description">Technologies: {{join this.technologies ', '}}</div>{{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</body>
+</html>
