@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
+import { registerHandlebarsHelpers } from './helpers/handlesHelpers.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -14,6 +15,8 @@ import resumeRoutes from './routes/resumeRoutes.js'
 dotenv.config()
 
 const app = express()
+
+registerHandlebarsHelpers()
 
 // Middleware
 app.use(helmet())
