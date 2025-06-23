@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FiSave, FiDownload, FiShare2, FiEye, FiChevronLeft } from 'react-icons/fi'
 import { Button, Modal, TemplateSelector, PreviewPane, PersonalInfoForm, ExperienceForm, EducationForm, SkillsForm, ProjectsForm, CertificationsForm } from '../components'
-import { useAuth } from '../context/AuthContext'
-import { resumeService } from '../services'
-import { Resume, ResumeFormData } from '../types'
+import { useAuth, useResume } from '../hooks'
+import { ResumeFormData } from '../types'
 
-const ResumeBuilderPage: React.FC = () => {
+const ResumeBuilderPage = () => {
   const { resumeId } = useParams()
-  const [resume, setResume] = useState<Resume | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { currentUser } = useAuth()
+  const { 
+    currentResume, 
+    fetchResume, 
+    createResume, 
+    updateResume,
+    downloadResume,
+    loading: resumeLoading 
+  } = useResume()
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('personal')
-  const { currentUser } = useAuth()
   const navigate = useNavigate()
 
   const methods = useForm<ResumeFormData>({
@@ -22,7 +27,7 @@ const ResumeBuilderPage: React.FC = () => {
       personalInfo: {
         firstName: '',
         lastName: '',
-        email: '',
+        email: currentUser?.email || '',
         phone: '',
         address: '',
         city: '',
@@ -46,34 +51,23 @@ const ResumeBuilderPage: React.FC = () => {
   })
 
   useEffect(() => {
-    const fetchResume = async () => {
-      if (!resumeId) {
-        setIsLoading(false)
-        return
-      }
-
-      try {
-        const fetchedResume = await resumeService.getResume(resumeId)
-        if (fetchedResume) {
-          setResume(fetchedResume)
-          methods.reset(fetchedResume.data)
-        }
-      } catch (error) {
-        console.error('Error fetching resume:', error)
-      } finally {
-        setIsLoading(false)
-      }
+    if (resumeId && !currentResume) {
+      fetchResume(resumeId)
     }
+  }, [resumeId, currentResume, fetchResume])
 
-    fetchResume()
-  }, [resumeId, methods])
+  useEffect(() => {
+    if (currentResume) {
+      methods.reset(currentResume.data)
+    }
+  }, [currentResume, methods])
 
   const onSubmit = async (data: ResumeFormData) => {
     try {
-      if (resumeId) {
-        await resumeService.updateResume(resumeId, data)
+      if (resumeId && currentResume) {
+        await updateResume(resumeId, data)
       } else {
-        const newResume = await resumeService.createResume(data)
+        const newResume = await createResume(data)
         navigate(`/builder/${newResume._id}`)
       }
     } catch (error) {
@@ -82,12 +76,8 @@ const ResumeBuilderPage: React.FC = () => {
   }
 
   const handleDownload = async (format: 'pdf' | 'docx') => {
-    try {
-      const data = methods.getValues()
-      await resumeService.downloadResume(data, format)
-    } catch (error) {
-      console.error('Error downloading resume:', error)
-    }
+    const data = methods.getValues()
+    await downloadResume(data, format)
   }
 
   const handleShare = async () => {
@@ -95,7 +85,7 @@ const ResumeBuilderPage: React.FC = () => {
     console.log('Sharing resume')
   }
 
-  if (isLoading) {
+  if (resumeLoading) {
     return <div>Loading...</div>
   }
 
@@ -109,18 +99,18 @@ const ResumeBuilderPage: React.FC = () => {
           >
             <FiChevronLeft className="mr-1" /> Back
           </button>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-gray-900">
             {resumeId ? 'Edit Resume' : 'Create New Resume'}
           </h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
               <TemplateSelector />
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex overflow-x-auto mb-6">
                 {['personal', 'experience', 'education', 'skills', 'projects', 'certifications'].map((tab) => (
                   <button
@@ -160,7 +150,7 @@ const ResumeBuilderPage: React.FC = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 sticky top-4">
+            <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
               <h2 className="text-lg font-semibold mb-4">Resume Tips</h2>
               <ul className="space-y-3">
                 <li className="flex items-start">

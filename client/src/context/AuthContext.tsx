@@ -1,70 +1,76 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import dayjs from 'dayjs';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  picture?: string;
-}
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { authService } from '../services/authService'
+import { User } from '../types'
 
 interface AuthContextType {
-  user: User | null;
-  token: string | null;
-  login: (token: string) => void;
-  logout: () => void;
-  isAuthenticated: boolean;
+  currentUser: User | null
+  loading: boolean
+  login: (email: string, password: string) => Promise<void>
+  register: (name: string, email: string, password: string) => Promise<void>
+  logout: () => void
+  googleLogin: () => void
 }
 
-const AuthContext = createContext<AuthContextType>(null!);
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (token) {
-      const decoded: any = jwtDecode(token);
-      if (dayjs.unix(decoded.exp).isBefore(dayjs())) {
-        logout();
-      } else {
-        setUser({
-          id: decoded.sub,
-          email: decoded.email,
-          name: decoded.name,
-          picture: decoded.picture,
-        });
-        setIsAuthenticated(true);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const checkAuth = async () => {
+      try {
+        const user = await authService.getCurrentUser()
+        setCurrentUser(user)
+      } catch (error) {
+        setCurrentUser(null)
+      } finally {
+        setLoading(false)
       }
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
     }
-  }, [token]);
+    checkAuth()
+  }, [])
 
-  const login = (newToken: string) => {
-    localStorage.setItem('token', newToken);
-    setToken(newToken);
-  };
+  const login = async (email: string, password: string) => {
+    const user = await authService.login(email, password)
+    setCurrentUser(user)
+    navigate('/profile')
+  }
+
+  const register = async (name: string, email: string, password: string) => {
+    const user = await authService.register(name, email, password)
+    setCurrentUser(user)
+    navigate('/profile')
+  }
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    setUser(null);
-    setIsAuthenticated(false);
-    navigate('/login');
-  };
+    authService.logout()
+    setCurrentUser(null)
+    navigate('/')
+  }
 
-  const value = { user, token, login, logout, isAuthenticated };
+  const googleLogin = () => {
+    authService.googleLogin()
+  }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+  const value = {
+    currentUser,
+    loading,
+    login,
+    register,
+    logout,
+    googleLogin
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
 
 export const useAuth = () => {
-  return useContext(AuthContext);
-};
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
+}
