@@ -1,6 +1,7 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import { Button } from './Button'
-import { Input, Textarea } from './FormElements'
+import Button from './Button'
+import Input from './FormElements/Input';
+import Textarea from './FormElements/Textarea';
 
 const ExperienceForm = () => {
   const { control } = useFormContext()

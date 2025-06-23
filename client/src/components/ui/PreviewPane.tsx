@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import { SocialShare } from './SocialShare'
+import SocialShare from './SocialShare'
 
 const PreviewPane = () => {
   const { watch } = useFormContext()

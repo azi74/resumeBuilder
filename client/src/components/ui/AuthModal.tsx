@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button, Input } from './FormElements'
-import { validateEmail } from '../utils/validationUtils'
+import Button from './Button'
+import Input from './FormElements/Input';
+import { validateEmail } from '@/utils/validationUtils';
 
 interface AuthModalProps {
   isLogin: boolean

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Button } from './Button'
-import { useAuth } from '../hooks/useAuth'
-import { GoogleLoginButton } from './GoogleLoginButton'
+import Button from './Button'
+import { useAuth } from '@/context/AuthContext'
+import GoogleLoginButton from './GoogleLoginButton'
 
 interface NavbarProps {
   user: User | null

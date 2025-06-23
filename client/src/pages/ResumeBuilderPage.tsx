@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { FiSave, FiDownload, FiShare2, FiEye, FiChevronLeft } from 'react-icons/fi'
-import { Button, Modal, TemplateSelector, PreviewPane, PersonalInfoForm, ExperienceForm, EducationForm, SkillsForm, ProjectsForm, CertificationsForm } from '../components'
-import { useAuth, useResume } from '../hooks'
+import { Button, Modal, TemplateSelector, PreviewPane, PersonalInfoForm, ExperienceForm, EducationForm, SkillsForm, ProjectsForm, CertificationsForm } from '@componets/ui/'
+import { useAuth } from '@/context/AuthContext'
+import { useResume } from '@/context/ResumeContext'
 import { ResumeFormData } from '../types'
 
 const ResumeBuilderPage = () => {

@@ -1,7 +1,7 @@
 import { AnimatePresence } from 'framer-motion'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { HomePage, AuthPage, ProfilePage, ResumeBuilderPage } from './pages'
-import { MainLayout } from './layouts'
+import MainLayout from './layouts/MainLayout'
 import { AuthProvider } from './context/AuthContext'
 import { ResumeProvider } from './context/ResumeContext'
 

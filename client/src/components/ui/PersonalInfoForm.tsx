@@ -1,5 +1,7 @@
 import { useFormContext } from 'react-hook-form'
-import { Input, Textarea, FileUpload } from './FormElements'
+import Input from './FormElements/Input';
+import Textarea from './FormElements/Textarea';
+import FileUpload from './FormElements/FileUpload';
 
 const PersonalInfoForm = () => {
   const { control } = useFormContext()

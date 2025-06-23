@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { authService } from '../services/authService'
+import { authService } from '@/services/authServices'
 import { User } from '../types'
 
 interface AuthContextType {

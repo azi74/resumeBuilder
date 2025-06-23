@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AuthModal, GoogleLoginButton } from '../components'
+import GoogleLoginButton from '@/components/ui/GoogleLoginButton'
+import AuthModal from '@/components/ui/AuthModal'
 import { useAuth } from '../hooks/useAuth'
 
 const AuthPage = () => {

@@ -1,6 +1,7 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import { Button } from './Button'
-import { Input, Select } from './FormElements'
+import Button  from './Button'
+import Input from './FormElements/Input';
+import Select from './FormElements/Select';
 
 const skillLevels = [
   { value: 'beginner', label: 'Beginner' },

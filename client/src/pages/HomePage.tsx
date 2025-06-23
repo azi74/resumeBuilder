@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Button } from '../components'
+import Button from '@/components/ui/Button'
 import { TEMPLATES } from '../constants/resumeTemplates'
 import { useAuth } from '../hooks/useAuth'
 

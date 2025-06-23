@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '../components'
-import { useAuth, useResume } from '../hooks'
+import Button from '@/components/ui/Button'
+import { useAuth } from '@/context/AuthContext'
+import { useResume } from '@/context/ResumeContext'
 
 const ProfilePage = () => {
   const { currentUser, logout } = useAuth()

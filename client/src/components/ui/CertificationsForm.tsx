@@ -1,6 +1,6 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import { Button } from './Button'
-import { Input } from './FormElements'
+import Button from './Button'
+import Input from './FormElements/Input';
 
 const CertificationsForm = () => {
   const { control } = useFormContext()

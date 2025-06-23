@@ -1,5 +1,5 @@
 import { useGoogleLogin } from '@react-oauth/google'
-import { Button } from './Button'
+import  Button  from "./Button";
 import { FcGoogle } from 'react-icons/fc'
 
 interface GoogleLoginButtonProps {
