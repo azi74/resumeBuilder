@@ -4,7 +4,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "eslint . --ext .js"
   },
   "keywords": [],
   "author": "",
@@ -30,5 +31,12 @@
     "morgan": "^1.10.0",
     "multer": "^2.0.1",
     "puppeteer": "^24.10.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.2.0",
+    "typescript-eslint": "^8.35.0"
   }
 }
