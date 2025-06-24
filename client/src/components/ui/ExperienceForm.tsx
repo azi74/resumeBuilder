@@ -4,7 +4,7 @@ import Input from './FormElements/Input';
 import Textarea from './FormElements/Textarea';
 
 const ExperienceForm = () => {
-  const { control } = useFormContext()
+  const { control, register, watch } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'experiences'
@@ -54,7 +54,7 @@ const ExperienceForm = () => {
                 name={`experiences.${index}.jobTitle`} 
                 label="Job Title" 
                 control={control} 
-                required 
+                rules={{ required: 'Job Title is required' }}
               />
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
@@ -62,7 +62,7 @@ const ExperienceForm = () => {
                   name={`experiences.${index}.company`} 
                   label="Company" 
                   control={control} 
-                  required 
+                  rules={{ required: 'Name of Company is required' }}
                 />
                 <Input 
                   name={`experiences.${index}.location`} 
@@ -77,7 +77,7 @@ const ExperienceForm = () => {
                   label="Start Date" 
                   control={control} 
                   type="date" 
-                  required 
+                  rules={{ required: 'Required' }}
                 />
                 <Input 
                   name={`experiences.${index}.endDate`} 
@@ -104,8 +104,7 @@ const ExperienceForm = () => {
                 label="Description" 
                 control={control} 
                 rows={3} 
-                className="mt-2"
-                required 
+                className="mt-2" 
               />
             </div>
           ))}

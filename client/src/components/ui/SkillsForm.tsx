@@ -57,14 +57,14 @@ const SkillsForm = () => {
                   name={`skills.${index}.name`} 
                   label="Skill Name" 
                   control={control} 
-                  required 
+                  rules={{ required: 'Skill Name is required' }}  
                 />
                 <Select 
                   name={`skills.${index}.level`} 
                   label="Skill Level" 
                   control={control} 
                   options={skillLevels} 
-                  required 
+                  rules={{ required: 'Skill Level is required' }} 
                 />
               </div>
             </div>

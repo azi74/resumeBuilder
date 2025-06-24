@@ -52,14 +52,14 @@ const CertificationsForm = () => {
                 name={`certifications.${index}.name`} 
                 label="Certification Name" 
                 control={control} 
-                required 
+                rules={{ required: 'Name of Certification is required' }}
               />
               
               <Input 
                 name={`certifications.${index}.issuingOrganization`} 
                 label="Issuing Organization" 
                 control={control} 
-                required 
+                rules={{ required: 'Required' }} 
                 className="mt-2"
               />
               
@@ -69,7 +69,7 @@ const CertificationsForm = () => {
                   label="Issue Date" 
                   control={control} 
                   type="date" 
-                  required 
+                  rules={{ required: 'Required' }}
                 />
                 <Input 
                   name={`certifications.${index}.expirationDate`} 

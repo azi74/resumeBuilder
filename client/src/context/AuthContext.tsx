@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const user = await authService.getCurrentUser()
         setCurrentUser(user)
       } catch (error) {
+        console.error('Failed to get current user:', error)
         setCurrentUser(null)
       } finally {
         setLoading(false)

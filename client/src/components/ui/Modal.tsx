@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { X } from 'react-icons/bs'
+import { BsXCircle } from 'react-icons/bs'
+
 
 interface ModalProps {
   isOpen: boolean
@@ -77,7 +78,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, size = 
                       className="text-gray-400 hover:text-gray-500 focus:outline-none"
                       aria-label="Close"
                     >
-                      <X className="h-6 w-6" />
+                      <BsXCircle className="h-6 w-6" />
                     </button>
                   </div>
                   <div className="mt-4">{children}</div>

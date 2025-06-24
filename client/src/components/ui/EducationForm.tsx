@@ -4,7 +4,7 @@ import Input from './FormElements/Input';
 import Textarea from './FormElements/Textarea';
 
 const EducationForm = () => {
-  const { control } = useFormContext()
+  const { control, register, watch } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'educations'
@@ -54,7 +54,7 @@ const EducationForm = () => {
                 name={`educations.${index}.institution`} 
                 label="Institution" 
                 control={control} 
-                required 
+                rules={{ required: 'Name of Institution is required' }}
               />
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
@@ -62,7 +62,7 @@ const EducationForm = () => {
                   name={`educations.${index}.degree`} 
                   label="Degree" 
                   control={control} 
-                  required 
+                  rules={{ required: 'Degree is required' }} 
                 />
                 <Input 
                   name={`educations.${index}.fieldOfStudy`} 
@@ -77,7 +77,7 @@ const EducationForm = () => {
                   label="Start Date" 
                   control={control} 
                   type="date" 
-                  required 
+                  rules={{ required: 'Required' }}
                 />
                 <Input 
                   name={`educations.${index}.endDate`} 

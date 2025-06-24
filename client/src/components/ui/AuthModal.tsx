@@ -22,6 +22,7 @@ const AuthModal = ({ isLogin, onSuccess, onToggleMode }: AuthModalProps) => {
 
   const onSubmit = async (data: AuthFormData) => {
     try {
+      console.log(data)
       setAuthError('')
       // Here you would call your auth service
       // For example: await authService.login(data.email, data.password)

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from './Button'
 import { useAuth } from '@/context/AuthContext'
 import GoogleLoginButton from './GoogleLoginButton'
+import { User } from '@/types/auth'
 
 interface NavbarProps {
   user: User | null

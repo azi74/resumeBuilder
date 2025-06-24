@@ -51,7 +51,7 @@ const ProjectsForm = () => {
                 name={`projects.${index}.name`} 
                 label="Project Name" 
                 control={control} 
-                required 
+                rules={{ required: 'Name of Project is required' }} 
               />
               
               <Input 
@@ -68,7 +68,7 @@ const ProjectsForm = () => {
                 control={control} 
                 rows={3} 
                 className="mt-2"
-                required 
+                rules={{ required: 'Please Provide a brief description' }} 
               />
               
               <Input 

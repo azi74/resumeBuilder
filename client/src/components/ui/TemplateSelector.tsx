@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import { TEMPLATES } from '../constants/resumeTemplates'
+import { TEMPLATES } from '@/constants/resumeTemplates'
 
 const TemplateSelector = () => {
   const { watch, setValue } = useFormContext()

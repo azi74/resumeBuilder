@@ -1,6 +1,7 @@
 import { useGoogleLogin } from '@react-oauth/google'
 import  Button  from "./Button";
 import { FcGoogle } from 'react-icons/fc'
+import { useAuth } from '@/context/AuthContext';
 
 interface GoogleLoginButtonProps {
   onClick?: () => void
@@ -11,6 +12,7 @@ const GoogleLoginButton = ({ onClick }: GoogleLoginButtonProps) => {
 
   const login = useGoogleLogin({
     onSuccess: tokenResponse => {
+      console.log('Google Token:', tokenResponse)
       googleLogin()
     },
     onError: () => {
